@@ -17,8 +17,11 @@ public class Knight extends Piece {
     int[] legalRowOffsets = {-2, -2, -1, -1, 1, 1, 2, 2};
     int[] legalColOffsets = {-1, 1, -2, 2, -2, 2, -1, 1};
     for (int i = 0; i < legalColOffsets.length; i++) {
-      if (positionInBounds(row + legalRowOffsets[i], col + legalColOffsets[i]))
-        legalPositions.add(board[row + legalRowOffsets[i]][col + legalColOffsets[i]]);
+      if (positionInBounds(row + legalRowOffsets[i], col + legalColOffsets[i])) {
+        Square tentative_square = board[row + legalRowOffsets[i]][col + legalColOffsets[i]];
+        if (!tentative_square.isOccupied() || tentative_square.getOccupyingPiece().getColor() != this.getColor())
+          legalPositions.add(tentative_square);
+      }
     }
     return legalPositions;
   }
