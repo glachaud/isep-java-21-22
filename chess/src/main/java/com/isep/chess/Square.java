@@ -32,4 +32,15 @@ public class Square {
     this.occupyingPiece = p;
   }
 
+  public int getColor() {
+    return color;
+  }
+
+  public int getRow() {
+    return row;
+  }
+
+  public int getCol() {
+    return col;
+  }
 }

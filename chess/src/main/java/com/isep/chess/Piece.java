@@ -4,9 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Piece {
-  private int color;
+  private final int color;
   private Square currentSquare;
 
+  public Piece(int color, Square currentSquare) {
+    this.color = color;
+    this.currentSquare = currentSquare;
+  }
 
   public boolean move(Square fin) {
     Piece occup = fin.getOccupyingPiece();
