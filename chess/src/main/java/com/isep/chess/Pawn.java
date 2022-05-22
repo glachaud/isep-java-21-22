@@ -37,12 +37,12 @@ public class Pawn extends Piece {
     }
     // Pawn right attack
     if (positionInBounds(row + color, col + 1)) {
-      if (board[row + color][col + 1].isOccupied() && board[row + color][col + 1].getColor() != color)
+      if (board[row + color][col + 1].isOccupied() && board[row + color][col + 1].getOccupyingPiece().getColor() != color)
         legalPositions.add(board[row + color][col + 1]);
     }
     // Pawn left attack
     if (positionInBounds(row + color, col - 1)) {
-      if (board[row + color][col - 1].isOccupied() && board[row + color][col - 1].getColor() != color)
+      if (board[row + color][col - 1].isOccupied() && board[row + color][col - 1].getOccupyingPiece().getColor() != color)
         legalPositions.add(board[row + color][col - 1]);
     }
     return legalPositions;
