@@ -110,6 +110,10 @@ public abstract class Piece {
     return diagonalPositions;
   }
 
+  protected boolean positionInBounds(int row, int column) {
+    return row >= 0 && row < Board.BOARD_SIZE && column >= 0 && column <= Board.BOARD_SIZE;
+  }
+
   public boolean checkAddAndStopPosition(Square[][] board, int row, int column, List<Square> diagonalPositions) {
     if (board[row][column].isOccupied()) {
       if (board[row][column].getOccupyingPiece().getColor() == this.color) {

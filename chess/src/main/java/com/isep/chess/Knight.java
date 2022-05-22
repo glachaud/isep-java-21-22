@@ -22,8 +22,4 @@ public class Knight extends Piece {
     }
     return legalPositions;
   }
-
-  private boolean positionInBounds(int row, int column) {
-    return row >= 0 && row < Board.BOARD_SIZE && column >= 0 && column <= Board.BOARD_SIZE;
-  }
 }
