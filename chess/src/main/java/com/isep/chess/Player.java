@@ -18,6 +18,7 @@ public class Player {
     this.color = color;
     this.availableMoves = new HashMap<>();
     this.movableSquares = new LinkedList<>();
+    this.squares = new LinkedList<>();
     this.b = b;
     Square[][] board = b.getBoardArray();
     for (int row = 0; row < Board.BOARD_SIZE; row++) {
@@ -68,8 +69,9 @@ public class Player {
   /**
    * Determines whether a move is valid, i.e. the move does not result
    * in a check for the player who performed it.
-   * @param p piece that is moved
-   * @param sq new position for the piece.
+   *
+   * @param p        piece that is moved
+   * @param sq       new position for the piece.
    * @param opponent White is current instance is Black, and vice versa.
    * @return {@code true} if the move is valid, {@code false} otherwise.
    */
@@ -99,20 +101,49 @@ public class Player {
    * The method iterates through all the legal moves for the king. It tests
    * whether the king can actually move, i.e. if the move prolongs the check; if
    * it is the case, the position is recorded.
+   *
    * @param opponent White if the instance is Black, and vice versa.
    * @return true if the king can escape, false otherwise.
    */
-  public boolean canEvade(Player opponent){
+  public boolean canEvade(Player opponent) {
     boolean evade = false;
-    for (Square kingMove: king.getLegalPositions(b)){
-      if(testMove(king, kingMove, opponent)){
-        if(opponent.getAvailableMoves().get(kingMove).isEmpty()){
+    for (Square kingMove : king.getLegalPositions(b)) {
+      if (testMove(king, kingMove, opponent)) {
+        if (opponent.getAvailableMoves().get(kingMove).isEmpty()) {
           movableSquares.add(kingMove);
           evade = true;
         }
       }
     }
     return evade;
+  }
+
+  /**
+   * Determines whether a check position can be saved by capturing the
+   * offending piece.
+   * @param threats list of {@link Piece} that put the king in check
+   * @param opponent White if the current instance is Black, and vice versa
+   * @return true if the threat can be captured, false otherwise.
+   */
+  public boolean canCapture(List<Piece> threats, Player opponent) {
+    // if there is more than one threat, all is lost
+    boolean capture = false;
+    if (threats.size() == 1) {
+      Square threatSquare = threats.get(0).getPosition();
+      if (king.getLegalPositions(b).contains(threatSquare)) {
+        movableSquares.add(threatSquare);
+        if (testMove(king, threatSquare, opponent))
+          capture = true;
+      }
+      if (!availableMoves.get(threatSquare).isEmpty()) {
+        movableSquares.add(threatSquare);
+        for (Piece p : availableMoves.get(threatSquare)) {
+          if (testMove(p, threatSquare, opponent))
+            capture = true;
+        }
+      }
+    }
+    return capture;
   }
 
   public int getColor() {
