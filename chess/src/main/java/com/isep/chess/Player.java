@@ -28,6 +28,11 @@ public class Player {
     }
   }
 
+  /**
+   * Determines all the legal moves for a player.
+   * This is represented by {@link Map} object that maps each {@link Square}
+   * to a list of {@link Piece} that can reach it in one move.
+   */
   public void update() {
     // Empty the list of availableMoves at each turn
     for (List<Piece> pieces : availableMoves.values()) {
@@ -47,6 +52,7 @@ public class Player {
    * Determines whether the king is in check.
    * If the king is not in check, all the squares are movable, provided that the move does not lead to
    * a check position to the player.
+   *
    * @param opponentAvailableMoves {@link Map} of {@link Square} indicating which opponent's piece can reach square.
    * @return {@code true} if the king is in check, {@code false} otherwise.
    */
@@ -57,6 +63,35 @@ public class Player {
       return false;
     }
     return true;
+  }
+
+  /**
+   * Determines whether a move is valid, i.e. the move does not result
+   * in a check for the player who performed it.
+   * @param p piece that is moved
+   * @param sq new position for the piece.
+   * @param opponent White is current instance is Black, and vice versa.
+   * @return {@code true} if the move is valid, {@code false} otherwise.
+   */
+  public boolean testMove(Piece p, Square sq, Player opponent) {
+    Piece c = sq.getOccupyingPiece();
+    boolean moveTest = true;
+    Square init = p.getPosition();
+
+    p.move(sq);
+    update();
+    opponent.update();
+    if (inCheck(opponent.getAvailableMoves())) {
+      moveTest = false;
+    }
+
+    p.move(init);
+    if (c != null)
+      sq.setOccupyingPiece(c);
+    update();
+    opponent.update();
+    movableSquares.addAll(squares);
+    return moveTest;
   }
 
   public int getColor() {
