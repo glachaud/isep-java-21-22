@@ -94,6 +94,27 @@ public class Player {
     return moveTest;
   }
 
+  /**
+   * Determines if the king can escape the check position.
+   * The method iterates through all the legal moves for the king. It tests
+   * whether the king can actually move, i.e. if the move prolongs the check; if
+   * it is the case, the position is recorded.
+   * @param opponent White if the instance is Black, and vice versa.
+   * @return true if the king can escape, false otherwise.
+   */
+  public boolean canEvade(Player opponent){
+    boolean evade = false;
+    for (Square kingMove: king.getLegalPositions(b)){
+      if(testMove(king, kingMove, opponent)){
+        if(opponent.getAvailableMoves().get(kingMove).isEmpty()){
+          movableSquares.add(kingMove);
+          evade = true;
+        }
+      }
+    }
+    return evade;
+  }
+
   public int getColor() {
     return color;
   }
