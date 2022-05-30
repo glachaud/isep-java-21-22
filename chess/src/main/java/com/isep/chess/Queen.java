@@ -25,4 +25,12 @@ public class Queen extends Piece {
     legalPositions.addAll(getDiagonalOccupations(board, row, col));
     return legalPositions;
   }
+
+  @Override
+  List<Square> getBlockableSquares(Board b, Piece prey) {
+    List<Square> blockableSquares = new LinkedList<>();
+    blockableSquares.addAll(getLinearBlocks(b, prey));
+    blockableSquares.addAll(getDiagonalBlocks(b, prey));
+    return blockableSquares;
+  }
 }

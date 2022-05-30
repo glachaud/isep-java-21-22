@@ -14,4 +14,9 @@ public class Bishop extends Piece {
     int column = this.getPosition().getCol();
     return getDiagonalOccupations(board, row, column);
   }
+
+  @Override
+  List<Square> getBlockableSquares(Board b, Piece prey) {
+    return getDiagonalBlocks(b, prey);
+  }
 }

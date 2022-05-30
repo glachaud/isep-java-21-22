@@ -25,4 +25,9 @@ public class King extends Piece {
     }
     return legalPositions;
   }
+
+  @Override
+  List<Square> getBlockableSquares(Board b, Piece prey) {
+    return new LinkedList<>();
+  }
 }

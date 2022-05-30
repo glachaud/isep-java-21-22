@@ -1,5 +1,6 @@
 package com.isep.chess;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,5 +24,10 @@ public class Rook extends Piece {
       if (j != col) legalPositions.add(board[row][j]);
     }
     return legalPositions;
+  }
+
+  @Override
+  List<Square> getBlockableSquares(Board b, Piece prey) {
+    return getLinearBlocks(b, prey);
   }
 }
