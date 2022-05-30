@@ -121,7 +121,8 @@ public class Player {
   /**
    * Determines whether a check position can be saved by capturing the
    * offending piece.
-   * @param threats list of {@link Piece} that put the king in check
+   *
+   * @param threats  list of {@link Piece} that put the king in check
    * @param opponent White if the current instance is Black, and vice versa
    * @return true if the threat can be captured, false otherwise.
    */
@@ -144,6 +145,30 @@ public class Player {
       }
     }
     return capture;
+  }
+
+  /**
+   * Determines whether a check position can be saved by moving a piece
+   * between the king and the threatening piece.
+   * @param threats  list of {@link Piece} that put the king in check
+   * @param opponent White if the current instance is Black, and vice versa
+   * @return true if the threat can be blocked, false otherwise.
+   */
+  public boolean canBlock(List<Piece> threats, Player opponent) {
+    boolean blockable = false;
+    if (threats.size() == 1) {
+      Piece threateningPiece = threats.get(0);
+      for (Square sq : threateningPiece.getBlockableSquares(b, king)) {
+        if (!availableMoves.get(sq).isEmpty()) {
+          movableSquares.add(sq);
+          for (Piece p : availableMoves.get(sq)) {
+            if (testMove(p, sq, opponent))
+              blockable = true;
+          }
+        }
+      }
+    }
+    return blockable;
   }
 
   public int getColor() {
