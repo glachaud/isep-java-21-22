@@ -54,10 +54,11 @@ public class Player {
    * If the king is not in check, all the squares are movable, provided that the move does not lead to
    * a check position to the player.
    *
-   * @param opponentAvailableMoves {@link Map} of {@link Square} indicating which opponent's piece can reach square.
+   * @param opponent white if current player is black, and vice versa.
    * @return {@code true} if the king is in check, {@code false} otherwise.
    */
-  public boolean inCheck(Map<Square, List<Piece>> opponentAvailableMoves) {
+  public boolean inCheck(Player opponent) {
+    Map<Square, List<Piece>> opponentAvailableMoves = opponent.getAvailableMoves();
     Square kingPosition = king.getPosition();
     if (opponentAvailableMoves.get(kingPosition).isEmpty()) {
       movableSquares.addAll(squares);
@@ -188,6 +189,19 @@ public class Player {
       }
     }
     return blockable;
+  }
+
+  /**
+   * Updates the {@link List<Square>} object that represents the squares on
+   * which the player can move.
+   * @param opponent white if current player is black, and vice versa.
+   * @return squares on which the player can move.
+   */
+  public List<Square> getAllowableSquares(Player opponent){
+    movableSquares.removeAll(movableSquares);
+    if(inCheck(opponent))
+      isCheckMated(opponent);
+    return movableSquares;
   }
 
   public int getColor() {
