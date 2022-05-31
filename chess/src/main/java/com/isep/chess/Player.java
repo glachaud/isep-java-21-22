@@ -67,6 +67,23 @@ public class Player {
   }
 
   /**
+   * Determines whether the player is checkmated.
+   * For a player to be checkmated, they have to be in check and have no way
+   * to break the check, such as by escaping, capturing or blocking the threats.
+   * @param opponent white if current player is black, and vice versa
+   * @return true if the player is checkmated, false otherwise.
+   */
+  public boolean isCheckMated(Player opponent) {
+    boolean checkmate = true;
+    if (!inCheck(opponent.getAvailableMoves())) return false;
+    if(canEvade(opponent)) checkmate = false;
+    List<Piece> threats = opponent.getAvailableMoves().get(king.getPosition());
+    if(canCapture(threats, opponent)) checkmate = false;
+    if(canBlock(threats, opponent)) checkmate = false;
+    return checkmate;
+  }
+
+  /**
    * Determines whether a move is valid, i.e. the move does not result
    * in a check for the player who performed it.
    *
@@ -150,6 +167,7 @@ public class Player {
   /**
    * Determines whether a check position can be saved by moving a piece
    * between the king and the threatening piece.
+   *
    * @param threats  list of {@link Piece} that put the king in check
    * @param opponent White if the current instance is Black, and vice versa
    * @return true if the threat can be blocked, false otherwise.
